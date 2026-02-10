@@ -3,7 +3,11 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FiSearch, FiDollarSign, FiPhoneCall, FiArrowRight } from 'react-icons/fi';
 import Hero from '../../components/public/Hero';
+import AboutPreview from '../../components/public/AboutPreview';
+import Testimonials from '../../components/public/Testimonials';
+import FAQ from '../../components/public/FAQ';
 import PropertyCard from '../../components/cards/PropertyCard';
+import { SkeletonCard } from '../../components/ui/Skeleton';
 import { getProperties } from '../../services/api';
 
 const propertyTypeTabs = ['All', 'Apartment', 'Duplex', 'Bungalow', 'Semi-Detached', 'Penthouse', 'Studio'];
@@ -37,6 +41,9 @@ const Home = () => {
   return (
     <div>
       <Hero />
+
+      {/* About Preview */}
+      <AboutPreview />
 
       {/* Featured Properties */}
       <section className="py-20 bg-white">
@@ -75,14 +82,7 @@ const Home = () => {
           {loading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[...Array(6)].map((_, i) => (
-                <div key={i} className="bg-gray-100 rounded-2xl overflow-hidden animate-pulse">
-                  <div className="aspect-[4/3] bg-gray-200" />
-                  <div className="p-5 space-y-3">
-                    <div className="h-4 bg-gray-200 rounded w-3/4" />
-                    <div className="h-3 bg-gray-200 rounded w-1/2" />
-                    <div className="h-8 bg-gray-200 rounded w-full mt-4" />
-                  </div>
-                </div>
+                <SkeletonCard key={i} />
               ))}
             </div>
           ) : (
@@ -179,6 +179,12 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+      {/* Testimonials */}
+      <Testimonials />
+
+      {/* FAQ */}
+      <FAQ />
 
       {/* CTA */}
       <section className="py-20 bg-gradient-to-br from-navy-800 to-navy-950">

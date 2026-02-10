@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiSearch, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { FiSearch } from 'react-icons/fi';
 import { HiOutlineHome } from 'react-icons/hi';
 
 const propertyTypes = ['All Types', 'Apartment', 'Duplex', 'Bungalow', 'Semi-Detached', 'Penthouse', 'Studio'];
@@ -27,10 +27,6 @@ const Hero = () => {
 
   const goNext = useCallback(() => {
     setCurrent((prev) => (prev + 1) % slides.length);
-  }, []);
-
-  const goPrev = useCallback(() => {
-    setCurrent((prev) => (prev - 1 + slides.length) % slides.length);
   }, []);
 
   // Auto-advance every 6 seconds (longer for video)
@@ -83,35 +79,6 @@ const Hero = () => {
         {/* Dark overlay for text readability */}
         <div className="absolute inset-0 bg-navy-950/60" />
         <div className="absolute inset-0 bg-gradient-to-t from-navy-950/80 via-transparent to-navy-950/40" />
-      </div>
-
-      {/* Carousel Controls */}
-      <button
-        onClick={goPrev}
-        className="absolute left-4 sm:left-6 top-1/2 -translate-y-1/2 z-20 w-11 h-11 bg-white/15 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white/30 transition border-0 cursor-pointer"
-      >
-        <FiChevronLeft className="text-white text-xl" />
-      </button>
-      <button
-        onClick={goNext}
-        className="absolute right-4 sm:right-6 top-1/2 -translate-y-1/2 z-20 w-11 h-11 bg-white/15 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white/30 transition border-0 cursor-pointer"
-      >
-        <FiChevronRight className="text-white text-xl" />
-      </button>
-
-      {/* Slide Indicators */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex gap-2">
-        {slides.map((_, i) => (
-          <button
-            key={i}
-            onClick={() => setCurrent(i)}
-            className={`rounded-full border-0 cursor-pointer transition-all ${
-              i === current
-                ? 'w-8 h-2.5 bg-primary-400'
-                : 'w-2.5 h-2.5 bg-white/40 hover:bg-white/60'
-            }`}
-          />
-        ))}
       </div>
 
       {/* Content - Centered */}

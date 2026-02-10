@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FiFilter } from 'react-icons/fi';
 import { HiOutlineAdjustments } from 'react-icons/hi';
 import PropertyCard from '../../components/cards/PropertyCard';
+import { SkeletonCard } from '../../components/ui/Skeleton';
 import { getProperties, getStates, getLGAs, getAreas } from '../../services/api';
 
 const propertyTypes = ['Apartment', 'Duplex', 'Bungalow', 'Semi-Detached', 'Penthouse', 'Studio'];
@@ -208,13 +209,7 @@ const Properties = () => {
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[...Array(6)].map((_, i) => (
-              <div key={i} className="bg-white rounded-2xl overflow-hidden animate-pulse">
-                <div className="aspect-[4/3] bg-gray-200" />
-                <div className="p-5 space-y-3">
-                  <div className="h-4 bg-gray-200 rounded w-3/4" />
-                  <div className="h-3 bg-gray-200 rounded w-1/2" />
-                </div>
-              </div>
+              <SkeletonCard key={i} />
             ))}
           </div>
         ) : filteredAndSorted.length > 0 ? (
