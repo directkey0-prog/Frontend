@@ -20,6 +20,36 @@ const PropertyDetails = () => {
   const [loading, setLoading] = useState(true);
   const [activeImage, setActiveImage] = useState(0);
   const [showPayment, setShowPayment] = useState(false);
+  const [isFavorited, setIsFavorited] = useState(false);
+
+  // Check if already favorited
+  useEffect(() => {
+    const favs = JSON.parse(localStorage.getItem('dk_favorites') || '[]');
+    setIsFavorited(favs.includes(String(id)));
+  }, [id]);
+
+  const toggleFavorite = () => {
+    const favs = JSON.parse(localStorage.getItem('dk_favorites') || '[]');
+    let updated;
+    if (favs.includes(String(id))) {
+      updated = favs.filter(f => f !== String(id));
+    } else {
+      updated = [...favs, String(id)];
+    }
+    localStorage.setItem('dk_favorites', JSON.stringify(updated));
+    setIsFavorited(!isFavorited);
+  };
+
+  const handleShare = async () => {
+    const url = window.location.href;
+    const text = `Check out this property on DirectKey: ${property?.property_name}`;
+    if (navigator.share) {
+      try { await navigator.share({ title: property?.property_name, text, url }); } catch {}
+    } else {
+      await navigator.clipboard.writeText(url);
+      alert('Link copied to clipboard!');
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -116,8 +146,10 @@ const PropertyDetails = () => {
           )}
 
           <div className="absolute top-4 right-4 flex gap-2">
-            <button className="w-10 h-10 bg-white/90 rounded-full flex items-center justify-center hover:bg-white transition border-0 cursor-pointer shadow-lg"><FiHeart className="text-gray-700" /></button>
-            <button className="w-10 h-10 bg-white/90 rounded-full flex items-center justify-center hover:bg-white transition border-0 cursor-pointer shadow-lg"><FiShare2 className="text-gray-700" /></button>
+            <button onClick={toggleFavorite} className={`w-10 h-10 rounded-full flex items-center justify-center hover:bg-white transition border-0 cursor-pointer shadow-lg ${isFavorited ? 'bg-red-50' : 'bg-white/90'}`}>
+              <FiHeart className={isFavorited ? 'text-red-500 fill-red-500' : 'text-gray-700'} />
+            </button>
+            <button onClick={handleShare} className="w-10 h-10 bg-white/90 rounded-full flex items-center justify-center hover:bg-white transition border-0 cursor-pointer shadow-lg"><FiShare2 className="text-gray-700" /></button>
           </div>
         </div>
 
