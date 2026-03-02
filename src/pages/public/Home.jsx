@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FiSearch, FiDollarSign, FiPhoneCall, FiArrowRight } from 'react-icons/fi';
 import Hero from '../../components/public/Hero';
-import AboutPreview from '../../components/public/AboutPreview';
 import Testimonials from '../../components/public/Testimonials';
 import FAQ from '../../components/public/FAQ';
 import PropertyCard from '../../components/cards/PropertyCard';
@@ -41,9 +40,6 @@ const Home = () => {
   return (
     <div>
       <Hero />
-
-      {/* About Preview */}
-      <AboutPreview />
 
       {/* Featured Properties */}
       <section className="py-20 bg-white">

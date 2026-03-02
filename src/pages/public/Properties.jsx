@@ -1,13 +1,13 @@
 import { useEffect, useState, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiFilter } from 'react-icons/fi';
+import { FiFilter, FiSearch, FiMapPin, FiHome } from 'react-icons/fi';
 import { HiOutlineAdjustments } from 'react-icons/hi';
 import PropertyCard from '../../components/cards/PropertyCard';
 import { SkeletonCard } from '../../components/ui/Skeleton';
 import { getProperties, getStates, getLGAs, getAreas } from '../../services/api';
 
-const propertyTypes = ['Apartment', 'Duplex', 'Bungalow', 'Semi-Detached', 'Penthouse', 'Studio'];
+const propertyTypes = ['Apartment', 'Duplex', 'Bungalow', 'Semi-Detached', 'Penthouse', 'Studio', 'Land', 'Shortlet'];
 const bedroomOptions = ['Any', '1', '2', '3', '4', '5+'];
 const sortOptions = [
   { label: 'Latest', value: 'latest' },
@@ -15,6 +15,75 @@ const sortOptions = [
   { label: 'Price: High to Low', value: 'price_desc' },
   { label: 'Most Viewed', value: 'views' },
 ];
+
+const EmptyState = ({ filters, properties, clearFilters }) => {
+  const hasStateFilter = !!filters.state;
+  const hasTypeFilter = !!filters.type;
+  const hasAnyFilter = hasStateFilter || hasTypeFilter || filters.local_government || filters.area || filters.minPrice || filters.maxPrice || filters.bedrooms !== 'Any';
+
+  // Build a human-readable description of what was searched
+  const searchDesc = [
+    hasTypeFilter && filters.type,
+    hasStateFilter && `in ${filters.state}`,
+  ].filter(Boolean).join(' ');
+
+  // Similar properties: match at least one of state or type (but not both, to avoid showing the same empty result)
+  const similar = properties
+    .filter(p => {
+      if (hasStateFilter && hasTypeFilter) {
+        return p.state === filters.state || p.property_type === filters.type;
+      }
+      if (hasStateFilter) return p.state === filters.state;
+      if (hasTypeFilter) return p.property_type === filters.type;
+      return true;
+    })
+    .slice(0, 3);
+
+  return (
+    <div>
+      <div className="text-center py-16">
+        <div className="w-20 h-20 bg-primary-50 rounded-full flex items-center justify-center mx-auto mb-5">
+          <FiSearch className="text-3xl text-primary-400" />
+        </div>
+        <h3 className="text-xl font-bold text-navy-900 mb-2">
+          {searchDesc ? `No ${searchDesc} listings available` : 'No properties match your criteria'}
+        </h3>
+        <p className="text-gray-500 max-w-sm mx-auto mb-2">
+          We currently do not have any listings that match your search. Our inventory is updated regularly — please check back soon.
+        </p>
+        {hasAnyFilter && (
+          <p className="text-sm text-gray-400 mb-6">
+            Try broadening your search or removing some filters to see more results.
+          </p>
+        )}
+        <button
+          onClick={clearFilters}
+          className="bg-primary-400 hover:bg-primary-500 text-white px-6 py-2.5 rounded-xl font-medium transition-all border-0 cursor-pointer text-sm"
+        >
+          View All Properties
+        </button>
+      </div>
+
+      {similar.length > 0 && (
+        <div className="mt-4 mb-10">
+          <div className="flex items-center gap-2 mb-5">
+            <div className="flex-1 h-px bg-gray-200" />
+            <p className="text-sm font-semibold text-gray-500 px-3 flex items-center gap-1.5">
+              <FiHome className="text-primary-400" />
+              Similar Properties You May Like
+            </p>
+            <div className="flex-1 h-px bg-gray-200" />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {similar.map((property, index) => (
+              <PropertyCard key={property.id} property={property} index={index} />
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
 
 const Properties = () => {
   const [searchParams] = useSearchParams();
@@ -219,14 +288,7 @@ const Properties = () => {
             ))}
           </div>
         ) : (
-          <div className="text-center py-20">
-            <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <FiFilter className="text-3xl text-gray-400" />
-            </div>
-            <h3 className="text-lg font-semibold text-gray-700 mb-2">No properties found</h3>
-            <p className="text-gray-500 mb-6">Try adjusting your filters to see more results</p>
-            <button onClick={clearFilters} className="bg-primary-400 hover:bg-primary-500 text-white px-6 py-2.5 rounded-xl font-medium transition-all border-0 cursor-pointer text-sm">Clear All Filters</button>
-          </div>
+          <EmptyState filters={filters} properties={properties} clearFilters={clearFilters} />
         )}
       </div>
     </div>
