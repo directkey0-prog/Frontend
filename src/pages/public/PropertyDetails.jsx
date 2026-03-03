@@ -2,8 +2,10 @@ import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { IoBedOutline, IoWaterOutline } from 'react-icons/io5';
-import { FiMapPin, FiPhone, FiChevronLeft, FiChevronRight, FiShare2, FiHeart, FiCheck } from 'react-icons/fi';
+import { FiMapPin, FiPhone, FiChevronLeft, FiChevronRight, FiShare2, FiHeart, FiCheck, FiUsers } from 'react-icons/fi';
 import { MdOutlineApartment } from 'react-icons/md';
+import { TbRulerMeasure } from 'react-icons/tb';
+import { getTypeDisplay } from '../../utils/propertyTypes';
 import { getPropertyById, getConnectionFee } from '../../services/api';
 import { SkeletonPropertyDetail } from '../../components/ui/Skeleton';
 import PaymentModal from '../../components/payments/PaymentModal';
@@ -92,6 +94,11 @@ const PropertyDetails = () => {
 
   const images = property.property_images || [];
   const amenities = property.amenities || [];
+  const isLand = property.property_category === 'land';
+  const isShortlet = property.property_category === 'shortlet';
+  const isEventHall = property.property_category === 'event_hall';
+  const isOfficeSpace = property.property_category === 'office_space';
+  const typeDisplay = getTypeDisplay(property);
   const nextImage = () => setActiveImage((prev) => (prev + 1) % Math.max(images.length, 1));
   const prevImage = () => setActiveImage((prev) => (prev - 1 + Math.max(images.length, 1)) % Math.max(images.length, 1));
 
@@ -169,7 +176,7 @@ const PropertyDetails = () => {
           <div className="lg:col-span-2 space-y-8">
             <div>
               <div className="flex flex-wrap items-center gap-2 mb-3">
-                {property.property_type && <span className="bg-primary-50 text-primary-600 text-xs font-medium px-3 py-1 rounded-full">{property.property_type}</span>}
+                {typeDisplay && <span className="bg-primary-50 text-primary-600 text-xs font-medium px-3 py-1 rounded-full">{typeDisplay}</span>}
                 {property.featured && <span className="bg-yellow-50 text-yellow-700 text-xs font-medium px-3 py-1 rounded-full">Featured</span>}
               </div>
               <h1 className="text-2xl sm:text-3xl font-bold text-navy-900 mb-3">{property.property_name}</h1>
@@ -178,18 +185,36 @@ const PropertyDetails = () => {
                 <span>{property.area}, {property.local_government}, {property.state}</span>
               </div>
               <div className="flex items-baseline gap-1">
-                <span className="text-3xl font-bold text-navy-900">{'\u20A6'}{formatPrice(property.price_per_year || property.monthly_rent * 12)}</span>
-                <span className="text-gray-500">/year</span>
+                <span className="text-3xl font-bold text-navy-900">
+                  {'\u20A6'}{formatPrice(
+                    isEventHall ? property.price_per_hour :
+                    isShortlet ? property.price_per_night :
+                    (property.price_per_year || property.monthly_rent * 12)
+                  )}
+                </span>
+                <span className="text-gray-500">
+                  {isEventHall ? '/hr' : isShortlet ? '/night' : '/year'}
+                </span>
               </div>
             </div>
 
             {/* Key Features */}
             <div className="grid grid-cols-3 gap-4">
-              {[
+              {(isEventHall ? [
+                { icon: FiUsers, value: property.capacity, label: 'Capacity' },
+                { icon: MdOutlineApartment, value: 'Event Hall', label: 'Type' },
+              ] : isLand ? [
+                { icon: TbRulerMeasure, value: property.land_area ? `${property.land_area} ${property.land_unit}` : 'N/A', label: 'Land Size' },
+                { icon: MdOutlineApartment, value: 'Land', label: 'Type' },
+              ] : isOfficeSpace ? [
+                { icon: IoBedOutline, value: property.bedrooms, label: 'Rooms' },
+                { icon: IoWaterOutline, value: property.bathrooms, label: 'Bathrooms' },
+                { icon: MdOutlineApartment, value: 'Office Space', label: 'Type' },
+              ] : [
                 { icon: IoBedOutline, value: property.bedrooms, label: 'Bedrooms' },
                 { icon: IoWaterOutline, value: property.bathrooms, label: 'Bathrooms' },
-                { icon: MdOutlineApartment, value: property.property_type || 'N/A', label: 'Type' },
-              ].map((f) => (
+                { icon: MdOutlineApartment, value: typeDisplay || 'N/A', label: 'Type' },
+              ]).map((f) => (
                 <div key={f.label} className="bg-white rounded-xl p-4 text-center shadow-sm">
                   <f.icon className="text-2xl text-primary-400 mx-auto mb-2" />
                   <p className="text-lg font-bold text-navy-900">{f.value}</p>
@@ -207,7 +232,7 @@ const PropertyDetails = () => {
             {/* Amenities */}
             {amenities.length > 0 && (
               <div className="bg-white rounded-2xl p-6 shadow-sm">
-                <h2 className="text-lg font-bold text-navy-900 mb-4">Amenities</h2>
+                <h2 className="text-lg font-bold text-navy-900 mb-4">{isEventHall ? 'Event Hall Facilities' : 'Amenities'}</h2>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                   {amenities.map((amenity) => (
                     <div key={amenity} className="flex items-center gap-2 py-2">

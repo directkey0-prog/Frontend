@@ -2,12 +2,24 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { IoBedOutline, IoWaterOutline } from 'react-icons/io5';
-import { FiMapPin, FiEye, FiHeart } from 'react-icons/fi';
+import { FiMapPin, FiEye, FiHeart, FiUsers } from 'react-icons/fi';
 import { HiOutlinePhotograph } from 'react-icons/hi';
+import { TbRulerMeasure } from 'react-icons/tb';
+import { getTypeDisplay } from '../../utils/propertyTypes';
 
 const formatPrice = (amount) => {
   if (!amount) return '0';
   return new Intl.NumberFormat('en-NG').format(amount);
+};
+
+const getPriceDisplay = (property) => {
+  if (property.property_category === 'event_hall' && property.price_per_hour) {
+    return { amount: formatPrice(property.price_per_hour), suffix: '/hr' };
+  }
+  if (property.property_category === 'shortlet' && property.price_per_night) {
+    return { amount: formatPrice(property.price_per_night), suffix: '/night' };
+  }
+  return { amount: formatPrice(property.price_per_year || property.monthly_rent * 12), suffix: '/year' };
 };
 
 const PropertyCard = ({ property, index = 0 }) => {
@@ -32,6 +44,12 @@ const PropertyCard = ({ property, index = 0 }) => {
   const mainImage = images.length > 0
     ? images[0].image_url
     : 'https://picsum.photos/seed/default/800/600';
+
+  const priceDisplay = getPriceDisplay(property);
+  const isLand = property.property_category === 'land';
+  const isEventHall = property.property_category === 'event_hall';
+  const isOfficeSpace = property.property_category === 'office_space';
+  const typeDisplay = getTypeDisplay(property);
 
   const slideDirection = index % 3 === 0 ? -60 : index % 3 === 1 ? 0 : 60;
   const slideY = index % 3 === 1 ? 60 : 0;
@@ -65,9 +83,9 @@ const PropertyCard = ({ property, index = 0 }) => {
                 Featured
               </span>
             )}
-            {property.property_type && (
+            {typeDisplay && (
               <span className="bg-navy-800/80 backdrop-blur-sm text-white text-xs font-medium px-3 py-1 rounded-full">
-                {property.property_type}
+                {typeDisplay}
               </span>
             )}
           </div>
@@ -92,9 +110,9 @@ const PropertyCard = ({ property, index = 0 }) => {
           <div className="absolute bottom-3 left-3">
             <div className="bg-white rounded-lg px-3 py-1.5 shadow-lg">
               <span className="text-lg font-bold text-navy-900">
-                {'\u20A6'}{formatPrice(property.price_per_year || property.monthly_rent * 12)}
+                {'\u20A6'}{priceDisplay.amount}
               </span>
-              <span className="text-xs text-gray-500">/year</span>
+              <span className="text-xs text-gray-500">{priceDisplay.suffix}</span>
             </div>
           </div>
         </div>
@@ -114,18 +132,39 @@ const PropertyCard = ({ property, index = 0 }) => {
 
           {/* Features */}
           <div className="flex items-center gap-4 pt-4 border-t border-gray-100">
-            <div className="flex items-center gap-1.5">
-              <IoBedOutline className="text-gray-400" />
-              <span className="text-sm text-gray-600">
-                {property.bedrooms} {property.bedrooms === 1 ? 'Bed' : 'Beds'}
-              </span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <IoWaterOutline className="text-gray-400" />
-              <span className="text-sm text-gray-600">
-                {property.bathrooms} {property.bathrooms === 1 ? 'Bath' : 'Baths'}
-              </span>
-            </div>
+            {isEventHall ? (
+              <div className="flex items-center gap-1.5">
+                <FiUsers className="text-gray-400" />
+                <span className="text-sm text-gray-600">{property.capacity} guests</span>
+              </div>
+            ) : isLand ? (
+              property.land_area && (
+                <div className="flex items-center gap-1.5">
+                  <TbRulerMeasure className="text-gray-400" />
+                  <span className="text-sm text-gray-600">{property.land_area} {property.land_unit}</span>
+                </div>
+              )
+            ) : isOfficeSpace ? (
+              <div className="flex items-center gap-1.5">
+                <IoBedOutline className="text-gray-400" />
+                <span className="text-sm text-gray-600">{property.bedrooms} {property.bedrooms === 1 ? 'Room' : 'Rooms'}</span>
+              </div>
+            ) : (
+              <>
+                <div className="flex items-center gap-1.5">
+                  <IoBedOutline className="text-gray-400" />
+                  <span className="text-sm text-gray-600">
+                    {property.bedrooms} {property.bedrooms === 1 ? 'Bed' : 'Beds'}
+                  </span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <IoWaterOutline className="text-gray-400" />
+                  <span className="text-sm text-gray-600">
+                    {property.bathrooms} {property.bathrooms === 1 ? 'Bath' : 'Baths'}
+                  </span>
+                </div>
+              </>
+            )}
             {property.views_count > 0 && (
               <div className="flex items-center gap-1.5 ml-auto">
                 <FiEye className="text-gray-400 text-sm" />

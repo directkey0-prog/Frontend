@@ -4,7 +4,15 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FiSearch } from 'react-icons/fi';
 import { HiOutlineHome } from 'react-icons/hi';
 
-const propertyTypes = ['All Types', 'Apartment', 'Duplex', 'Bungalow', 'Semi-Detached', 'Penthouse', 'Studio'];
+const propertyTypes = ['All Types', 'Apartment', 'Land', 'Shortlet', 'Event Hall', 'Office Space'];
+
+const HERO_CATEGORY_MAP = {
+  'Apartment': 'apartment_type',
+  'Land': 'land',
+  'Shortlet': 'shortlet',
+  'Event Hall': 'event_hall',
+  'Office Space': 'office_space',
+};
 const popularStates = ['Lagos', 'Abuja', 'Rivers', 'Oyo', 'Ogun', 'Kano', 'Enugu', 'Delta', 'Edo', 'Kaduna'];
 
 // Carousel slides: video first, then all images
@@ -40,7 +48,9 @@ const Hero = () => {
   const handleSearch = () => {
     const params = new URLSearchParams();
     if (searchState) params.set('state', searchState);
-    if (searchType && searchType !== 'All Types') params.set('type', searchType);
+    if (searchType && searchType !== 'All Types') {
+      params.set('category', HERO_CATEGORY_MAP[searchType] || '');
+    }
     navigate(`/listings?${params.toString()}`);
   };
 

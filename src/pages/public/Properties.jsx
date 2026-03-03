@@ -6,8 +6,16 @@ import { HiOutlineAdjustments } from 'react-icons/hi';
 import PropertyCard from '../../components/cards/PropertyCard';
 import { SkeletonCard } from '../../components/ui/Skeleton';
 import { getProperties, getStates, getLGAs, getAreas } from '../../services/api';
+import { APARTMENT_SUB_TYPES } from '../../utils/propertyTypes';
 
-const propertyTypes = ['Apartment', 'Duplex', 'Bungalow', 'Semi-Detached', 'Penthouse', 'Studio', 'Land', 'Shortlet'];
+const PROPERTY_CATEGORIES = [
+  { value: 'apartment_type', label: 'Apartments' },
+  { value: 'land', label: 'Land' },
+  { value: 'shortlet', label: 'Shortlet' },
+  { value: 'event_hall', label: 'Event Hall' },
+  { value: 'office_space', label: 'Office Space' },
+];
+
 const bedroomOptions = ['Any', '1', '2', '3', '4', '5+'];
 const sortOptions = [
   { label: 'Latest', value: 'latest' },
@@ -16,25 +24,27 @@ const sortOptions = [
   { label: 'Most Viewed', value: 'views' },
 ];
 
+const getCategoryLabel = (categoryValue) => {
+  return PROPERTY_CATEGORIES.find(c => c.value === categoryValue)?.label || categoryValue;
+};
+
 const EmptyState = ({ filters, properties, clearFilters }) => {
   const hasStateFilter = !!filters.state;
-  const hasTypeFilter = !!filters.type;
-  const hasAnyFilter = hasStateFilter || hasTypeFilter || filters.local_government || filters.area || filters.minPrice || filters.maxPrice || filters.bedrooms !== 'Any';
+  const hasCategoryFilter = !!filters.category;
+  const hasAnyFilter = hasStateFilter || hasCategoryFilter || filters.sub_type || filters.local_government || filters.area || filters.minPrice || filters.maxPrice || filters.bedrooms !== 'Any';
 
-  // Build a human-readable description of what was searched
   const searchDesc = [
-    hasTypeFilter && filters.type,
+    hasCategoryFilter && getCategoryLabel(filters.category),
     hasStateFilter && `in ${filters.state}`,
   ].filter(Boolean).join(' ');
 
-  // Similar properties: match at least one of state or type (but not both, to avoid showing the same empty result)
   const similar = properties
     .filter(p => {
-      if (hasStateFilter && hasTypeFilter) {
-        return p.state === filters.state || p.property_type === filters.type;
+      if (hasStateFilter && hasCategoryFilter) {
+        return p.state === filters.state || p.property_category === filters.category;
       }
       if (hasStateFilter) return p.state === filters.state;
-      if (hasTypeFilter) return p.property_type === filters.type;
+      if (hasCategoryFilter) return p.property_category === filters.category;
       return true;
     })
     .slice(0, 3);
@@ -96,7 +106,8 @@ const Properties = () => {
     state: searchParams.get('state') || '',
     local_government: '',
     area: '',
-    type: searchParams.get('type') || '',
+    category: searchParams.get('category') || '',
+    sub_type: searchParams.get('sub_type') || '',
     minPrice: '',
     maxPrice: '',
     bedrooms: 'Any',
@@ -157,7 +168,8 @@ const Properties = () => {
     if (filters.state) result = result.filter(p => p.state === filters.state);
     if (filters.local_government) result = result.filter(p => p.local_government === filters.local_government);
     if (filters.area) result = result.filter(p => p.area === filters.area);
-    if (filters.type) result = result.filter(p => p.property_type === filters.type);
+    if (filters.category) result = result.filter(p => p.property_category === filters.category);
+    if (filters.sub_type) result = result.filter(p => p.apartment_sub_type === filters.sub_type);
     if (filters.minPrice) result = result.filter(p => (p.price_per_year || p.monthly_rent * 12) >= parseInt(filters.minPrice));
     if (filters.maxPrice) result = result.filter(p => (p.price_per_year || p.monthly_rent * 12) <= parseInt(filters.maxPrice));
     if (filters.bedrooms !== 'Any') {
@@ -178,15 +190,17 @@ const Properties = () => {
       const next = { ...prev, [key]: value };
       if (key === 'state') { next.local_government = ''; next.area = ''; }
       if (key === 'local_government') { next.area = ''; }
+      if (key === 'category' && value !== 'apartment_type') { next.sub_type = ''; }
       return next;
     });
   };
 
   const clearFilters = () => {
-    setFilters({ state: '', local_government: '', area: '', type: '', minPrice: '', maxPrice: '', bedrooms: 'Any' });
+    setFilters({ state: '', local_government: '', area: '', category: '', sub_type: '', minPrice: '', maxPrice: '', bedrooms: 'Any' });
   };
 
-  const activeFilterCount = Object.entries(filters).filter(([k, v]) => v && v !== 'Any').length;
+  const activeFilterCount = Object.entries(filters).filter(([k, v]) => k !== 'sub_type' && v && v !== 'Any').length
+    + (filters.sub_type ? 1 : 0);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -241,12 +255,21 @@ const Properties = () => {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-xs font-medium text-gray-500 mb-1.5">Property Type</label>
-                    <select value={filters.type} onChange={e => updateFilter('type', e.target.value)} className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-400">
+                    <label className="block text-xs font-medium text-gray-500 mb-1.5">Category</label>
+                    <select value={filters.category} onChange={e => updateFilter('category', e.target.value)} className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-400">
                       <option value="">All Types</option>
-                      {propertyTypes.map(t => <option key={t} value={t}>{t}</option>)}
+                      {PROPERTY_CATEGORIES.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
                     </select>
                   </div>
+                  {filters.category === 'apartment_type' && (
+                    <div>
+                      <label className="block text-xs font-medium text-gray-500 mb-1.5">Apartment Type</label>
+                      <select value={filters.sub_type} onChange={e => updateFilter('sub_type', e.target.value)} className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-400">
+                        <option value="">All Apartments</option>
+                        {APARTMENT_SUB_TYPES.map(t => <option key={t.value} value={t.value}>{t.label}</option>)}
+                      </select>
+                    </div>
+                  )}
                   <div>
                     <label className="block text-xs font-medium text-gray-500 mb-1.5">Min Price ({'\u20A6'}/year)</label>
                     <input type="number" value={filters.minPrice} onChange={e => updateFilter('minPrice', e.target.value)} placeholder="0" className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-400" />

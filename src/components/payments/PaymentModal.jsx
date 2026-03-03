@@ -179,9 +179,9 @@ const PaymentModal = ({ isOpen, onClose, property, connectionFee = 15000 }) => {
                 <div className="w-16 h-16 bg-primary-50 rounded-2xl flex items-center justify-center mx-auto mb-4">
                   <FiLock className="text-2xl text-primary-500" />
                 </div>
-                <h2 className="text-xl font-bold text-navy-900 mb-1">Unlock Landlord Contact</h2>
+                <h2 className="text-xl font-bold text-navy-900 mb-1">Get Your Digital Key</h2>
                 <p className="text-sm text-gray-500">
-                  Pay the one-time connection fee to get direct access to the landlord
+                  Pay the one-time connection fee to unlock the landlord's direct contact
                 </p>
               </div>
 

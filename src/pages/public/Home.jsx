@@ -9,7 +9,15 @@ import PropertyCard from '../../components/cards/PropertyCard';
 import { SkeletonCard } from '../../components/ui/Skeleton';
 import { getProperties } from '../../services/api';
 
-const propertyTypeTabs = ['All', 'Apartment', 'Duplex', 'Bungalow', 'Semi-Detached', 'Penthouse', 'Studio'];
+const propertyTypeTabs = ['All', 'Apartments', 'Land', 'Shortlet', 'Event Hall', 'Office Space'];
+
+const CATEGORY_MAP = {
+  'Apartments': 'apartment_type',
+  'Land': 'land',
+  'Shortlet': 'shortlet',
+  'Event Hall': 'event_hall',
+  'Office Space': 'office_space',
+};
 
 const Home = () => {
   const [properties, setProperties] = useState([]);
@@ -33,7 +41,7 @@ const Home = () => {
 
   const filteredProperties = activeTab === 'All'
     ? properties
-    : properties.filter(p => p.property_type === activeTab);
+    : properties.filter(p => p.property_category === CATEGORY_MAP[activeTab]);
 
   const displayProperties = filteredProperties.slice(0, 6);
 
