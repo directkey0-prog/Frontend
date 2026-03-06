@@ -36,8 +36,8 @@ const Terms = () => {
               content: 'DirectKey is a property rental connection platform that connects landlords with potential tenants in Nigeria. We provide a marketplace for property listings and facilitate connections between parties through a paid connection model.',
             },
             {
-              title: '3. Connection Fee',
-              content: 'To access landlord contact information, tenants must pay a non-refundable connection fee of ₦15,000 per property. This fee grants you direct access to the landlord\'s contact details including phone number, email, and WhatsApp. The connection fee is not a rental payment or deposit.',
+              title: '3. Digital Key Fee',
+              content: 'To access landlord contact information, tenants must pay a non-refundable Digital Key fee per property. The current fee is displayed on each property listing page. This fee grants you direct access to the landlord\'s contact details including phone number, email, and WhatsApp. The Digital Key fee is not a rental payment or deposit.',
             },
             {
               title: '4. User Responsibilities',

@@ -7,7 +7,7 @@ import Testimonials from '../../components/public/Testimonials';
 import FAQ from '../../components/public/FAQ';
 import PropertyCard from '../../components/cards/PropertyCard';
 import { SkeletonCard } from '../../components/ui/Skeleton';
-import { getProperties } from '../../services/api';
+import { getProperties, getConnectionFee } from '../../services/api';
 
 const propertyTypeTabs = ['All', 'Apartments', 'Land', 'Shortlet', 'Event Hall', 'Office Space'];
 
@@ -19,17 +19,21 @@ const CATEGORY_MAP = {
   'Office Space': 'office_space',
 };
 
+const formatPrice = (amount) => new Intl.NumberFormat('en-NG').format(amount);
+
 const Home = () => {
   const [properties, setProperties] = useState([]);
   const [activeTab, setActiveTab] = useState('All');
   const [loading, setLoading] = useState(true);
+  const [digitalKeyFee, setDigitalKeyFee] = useState(15000);
 
   useEffect(() => {
     const fetchProperties = async () => {
       try {
-        const data = await getProperties();
+        const [data, feeData] = await Promise.all([getProperties(), getConnectionFee()]);
         const approved = Array.isArray(data) ? data.filter(p => p.status === 'approved') : [];
         setProperties(approved);
+        if (feeData?.connection_fee) setDigitalKeyFee(parseInt(feeData.connection_fee));
       } catch (err) {
         console.error('Failed to fetch properties:', err);
       } finally {
@@ -149,8 +153,8 @@ const Home = () => {
               },
               {
                 icon: FiDollarSign,
-                title: 'Pay Connection Fee',
-                description: 'Pay a one-time connection fee of \u20A615,000 to unlock direct access to the landlord\'s contact.',
+                title: 'Get Digital Key',
+                description: `Pay a one-time digital key fee of \u20A6${formatPrice(digitalKeyFee)} to unlock direct access to the landlord's contact.`,
                 color: 'bg-primary-50',
                 iconColor: 'text-primary-500',
                 step: '02',

@@ -4,12 +4,12 @@ import { FiChevronDown } from 'react-icons/fi';
 
 const faqs = [
   {
-    q: 'What is the connection fee?',
-    a: 'The connection fee is a one-time payment of \u20A615,000 per property. This gives you direct access to the landlord\'s contact details including phone number, email, and WhatsApp.',
+    q: 'What is the Digital Key fee?',
+    a: 'The Digital Key is a one-time payment per property that unlocks direct access to the landlord\'s contact details including phone number, email, and WhatsApp. The current fee is displayed on each property listing.',
   },
   {
-    q: 'Is the connection fee refundable?',
-    a: 'The connection fee is non-refundable once the landlord\'s contact information has been provided. However, if there is a payment processing error, we handle refunds on a case-by-case basis.',
+    q: 'Is the Digital Key fee refundable?',
+    a: 'The Digital Key fee is non-refundable once the landlord\'s contact information has been provided. However, if there is a payment processing error, we handle refunds on a case-by-case basis.',
   },
   {
     q: 'How do I know the listings are genuine?',
@@ -17,7 +17,7 @@ const faqs = [
   },
   {
     q: 'How does the connection process work?',
-    a: 'Browse properties, find one you like, and pay the connection fee. Once payment is confirmed, you\'ll instantly receive the landlord\'s phone number, email, and WhatsApp. You can then contact them directly to arrange viewings.',
+    a: 'Browse properties, find one you like, and get your Digital Key. Once payment is confirmed, you\'ll instantly receive the landlord\'s phone number, email, and WhatsApp. You can then contact them directly to arrange viewings.',
   },
   {
     q: 'Can I list my property on DirectKey?',

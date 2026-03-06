@@ -37,7 +37,7 @@ const Privacy = () => {
             },
             {
               title: '3. Information Sharing',
-              content: 'When a tenant pays the connection fee, the landlord\'s contact information (name, phone, email, WhatsApp) is shared with the tenant. We do not sell your personal information to third parties. We may share data with payment processors (Paystack) and service providers who assist in operating our platform.',
+              content: 'When a tenant pays the Digital Key fee, the landlord\'s contact information (name, phone, email, WhatsApp) is shared with the tenant. We do not sell your personal information to third parties. We may share data with payment processors (Paystack) and service providers who assist in operating our platform.',
             },
             {
               title: '4. Data Security',
