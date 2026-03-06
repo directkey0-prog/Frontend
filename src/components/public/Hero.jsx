@@ -27,10 +27,20 @@ const slides = [
   { type: 'image', src: '/Dkim7.JPG' },
 ];
 
+const priceRanges = [
+  { label: 'Any Price', value: '' },
+  { label: 'Under ₦500k/yr', value: '0-500000' },
+  { label: '₦500k - ₦1M/yr', value: '500000-1000000' },
+  { label: '₦1M - ₦3M/yr', value: '1000000-3000000' },
+  { label: '₦3M - ₦5M/yr', value: '3000000-5000000' },
+  { label: 'Above ₦5M/yr', value: '5000000-' },
+];
+
 const Hero = () => {
   const navigate = useNavigate();
   const [searchState, setSearchState] = useState('');
   const [searchType, setSearchType] = useState('');
+  const [priceRange, setPriceRange] = useState('');
   const [current, setCurrent] = useState(0);
 
   const goNext = useCallback(() => {
@@ -50,6 +60,11 @@ const Hero = () => {
     if (searchState) params.set('state', searchState);
     if (searchType && searchType !== 'All Types') {
       params.set('category', HERO_CATEGORY_MAP[searchType] || '');
+    }
+    if (priceRange) {
+      const [min, max] = priceRange.split('-');
+      if (min) params.set('minPrice', min);
+      if (max) params.set('maxPrice', max);
     }
     navigate(`/listings?${params.toString()}`);
   };
@@ -132,7 +147,7 @@ const Hero = () => {
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="bg-white rounded-2xl p-3 shadow-2xl shadow-black/20 w-full max-w-2xl"
+            className="bg-white rounded-2xl p-3 shadow-2xl shadow-black/20 w-full max-w-3xl"
           >
             <div className="flex flex-col md:flex-row gap-3">
               <div className="flex-1">
@@ -164,6 +179,21 @@ const Hero = () => {
                 </select>
               </div>
 
+              <div className="hidden md:block w-px bg-gray-200" />
+
+              <div className="flex-1">
+                <label className="block text-xs font-medium text-gray-500 mb-1 px-3 pt-1">Price Range</label>
+                <select
+                  value={priceRange}
+                  onChange={(e) => setPriceRange(e.target.value)}
+                  className="w-full px-3 pb-2 text-sm text-gray-800 bg-transparent border-0 focus:outline-none cursor-pointer appearance-auto"
+                >
+                  {priceRanges.map(r => (
+                    <option key={r.value} value={r.value}>{r.label}</option>
+                  ))}
+                </select>
+              </div>
+
               <button
                 onClick={handleSearch}
                 className="bg-primary-400 hover:bg-primary-500 text-white px-8 py-3.5 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all border-0 cursor-pointer text-sm"
@@ -182,9 +212,9 @@ const Hero = () => {
             className="flex gap-12 sm:gap-16 mt-14"
           >
             {[
-              { value: '2,500+', label: 'Properties' },
-              { value: '1,200+', label: 'Landlords' },
-              { value: '15,000+', label: 'Happy Tenants' },
+              { value: '852+', label: 'Properties' },
+              { value: '486+', label: 'Landlords' },
+              { value: '250+', label: 'Happy Tenants' },
             ].map((stat) => (
               <div key={stat.label} className="text-center">
                 <div className="text-2xl sm:text-3xl font-bold text-white">{stat.value}</div>

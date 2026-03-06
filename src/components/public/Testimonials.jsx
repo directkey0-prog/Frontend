@@ -60,6 +60,9 @@ const Testimonials = () => {
                 <div>
                   <p className="text-sm font-semibold text-navy-900">{t.customer_name}</p>
                   <p className="text-xs text-gray-500">{t.customer_title}</p>
+                  {t.customer_location && (
+                    <p className="text-xs text-primary-400 mt-0.5">{t.customer_location}</p>
+                  )}
                 </div>
               </div>
             </motion.div>

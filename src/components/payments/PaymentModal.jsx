@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiX, FiCheck, FiPhone, FiMail, FiShield, FiLock } from 'react-icons/fi';
 import { IoLogoWhatsapp } from 'react-icons/io5';
@@ -27,7 +27,32 @@ const PaymentModal = ({ isOpen, onClose, property, connectionFee = 15000 }) => {
   const [email, setEmail] = useState('');
   const [formError, setFormError] = useState('');
   const [landlordContact, setLandlordContact] = useState(null);
+  const [showExitBanner, setShowExitBanner] = useState(false);
   const referenceRef = useRef(`DK_${Date.now()}_${Math.random().toString(36).substr(2, 6)}`);
+
+  // Exit intent detection on success step
+  useEffect(() => {
+    if (step !== 'success') return;
+
+    const handleBeforeUnload = (e) => {
+      e.preventDefault();
+      e.returnValue = '';
+    };
+
+    const handleMouseLeave = (e) => {
+      if (e.clientY <= 0) {
+        setShowExitBanner(true);
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    document.addEventListener('mouseleave', handleMouseLeave);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      document.removeEventListener('mouseleave', handleMouseLeave);
+    };
+  }, [step]);
 
   // Paystack config — reactive to form state on every render
   const paystackConfig = {
@@ -36,7 +61,7 @@ const PaymentModal = ({ isOpen, onClose, property, connectionFee = 15000 }) => {
     amount: connectionFee * 100, // kobo
     publicKey: PAYSTACK_KEY,
     currency: 'NGN',
-    label: 'DirectKey Connection Fee',
+    label: 'DirectKey Digital Key',
     metadata: {
       custom_fields: [
         { display_name: 'Tenant Name', variable_name: 'tenant_name', value: name },
@@ -192,7 +217,7 @@ const PaymentModal = ({ isOpen, onClose, property, connectionFee = 15000 }) => {
                   {[property?.area, property?.local_government, property?.state].filter(Boolean).join(', ')}
                 </p>
                 <div className="mt-3 pt-3 border-t border-gray-200 flex justify-between items-center">
-                  <span className="text-sm text-gray-600">Connection Fee</span>
+                  <span className="text-sm text-gray-600">Digital Key</span>
                   <span className="text-lg font-bold text-navy-900">{'\u20A6'}{formatPrice(connectionFee)}</span>
                 </div>
               </div>
@@ -253,6 +278,19 @@ const PaymentModal = ({ isOpen, onClose, property, connectionFee = 15000 }) => {
           {/* ── SUCCESS ── */}
           {step === 'success' && (
             <div className="p-6">
+              {/* Exit intent banner */}
+              {showExitBanner && (
+                <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 mb-4 flex items-start gap-3">
+                  <FiShield className="text-amber-500 flex-shrink-0 mt-0.5" />
+                  <div className="flex-1">
+                    <p className="text-sm font-semibold text-amber-800">Save the landlord's contact!</p>
+                    <p className="text-xs text-amber-700 mt-0.5">Screenshot or copy the details below before leaving this page.</p>
+                  </div>
+                  <button onClick={() => setShowExitBanner(false)} className="text-amber-500 bg-transparent border-0 cursor-pointer p-0">
+                    <FiX className="text-sm" />
+                  </button>
+                </div>
+              )}
               <div className="text-center mb-5">
                 <motion.div
                   initial={{ scale: 0 }}

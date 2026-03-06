@@ -42,7 +42,7 @@ const About = () => {
               </p>
               <p className="text-gray-600 leading-relaxed">
                 Our platform connects verified landlords with serious tenants through a trusted connection
-                system. By requiring a small connection fee, we ensure that only genuinely interested
+                system. By requiring a small digital key fee, we ensure that only genuinely interested
                 parties contact property owners, saving everyone time and creating meaningful connections.
               </p>
             </motion.div>
@@ -119,9 +119,9 @@ const About = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             {[
-              { value: '2,500+', label: 'Listed Properties' },
-              { value: '1,200+', label: 'Verified Landlords' },
-              { value: '15,000+', label: 'Happy Tenants' },
+              { value: '852+', label: 'Listed Properties' },
+              { value: '486+', label: 'Verified Landlords' },
+              { value: '250+', label: 'Happy Tenants' },
               { value: '36', label: 'States Covered' },
             ].map((stat) => (
               <motion.div

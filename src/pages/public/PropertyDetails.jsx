@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { IoBedOutline, IoWaterOutline } from 'react-icons/io5';
-import { FiMapPin, FiPhone, FiChevronLeft, FiChevronRight, FiShare2, FiHeart, FiCheck, FiUsers } from 'react-icons/fi';
+import { FiMapPin, FiPhone, FiChevronLeft, FiChevronRight, FiShare2, FiCheck, FiUsers } from 'react-icons/fi';
 import { MdOutlineApartment } from 'react-icons/md';
 import { TbRulerMeasure } from 'react-icons/tb';
 import { getTypeDisplay } from '../../utils/propertyTypes';
@@ -22,25 +22,6 @@ const PropertyDetails = () => {
   const [loading, setLoading] = useState(true);
   const [activeImage, setActiveImage] = useState(0);
   const [showPayment, setShowPayment] = useState(false);
-  const [isFavorited, setIsFavorited] = useState(false);
-
-  // Check if already favorited
-  useEffect(() => {
-    const favs = JSON.parse(localStorage.getItem('dk_favorites') || '[]');
-    setIsFavorited(favs.includes(String(id)));
-  }, [id]);
-
-  const toggleFavorite = () => {
-    const favs = JSON.parse(localStorage.getItem('dk_favorites') || '[]');
-    let updated;
-    if (favs.includes(String(id))) {
-      updated = favs.filter(f => f !== String(id));
-    } else {
-      updated = [...favs, String(id)];
-    }
-    localStorage.setItem('dk_favorites', JSON.stringify(updated));
-    setIsFavorited(!isFavorited);
-  };
 
   const handleShare = async () => {
     const url = window.location.href;
@@ -153,9 +134,6 @@ const PropertyDetails = () => {
           )}
 
           <div className="absolute top-4 right-4 flex gap-2">
-            <button onClick={toggleFavorite} className={`w-10 h-10 rounded-full flex items-center justify-center hover:bg-white transition border-0 cursor-pointer shadow-lg ${isFavorited ? 'bg-red-50' : 'bg-white/90'}`}>
-              <FiHeart className={isFavorited ? 'text-red-500 fill-red-500' : 'text-gray-700'} />
-            </button>
             <button onClick={handleShare} className="w-10 h-10 bg-white/90 rounded-full flex items-center justify-center hover:bg-white transition border-0 cursor-pointer shadow-lg"><FiShare2 className="text-gray-700" /></button>
           </div>
         </div>
@@ -267,16 +245,16 @@ const PropertyDetails = () => {
                   <FiPhone className="text-2xl text-primary-500" />
                 </div>
                 <h3 className="font-bold text-navy-900 mb-1">Interested in this property?</h3>
-                <p className="text-sm text-gray-500">Pay a one-time connection fee to get the landlord's contact details</p>
+                <p className="text-sm text-gray-500">Pay a one-time digital key fee to get the landlord's contact details</p>
               </div>
               <div className="bg-gray-50 rounded-xl p-4 mb-6">
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-600">Connection Fee</span>
+                  <span className="text-sm text-gray-600">Digital Key</span>
                   <span className="text-xl font-bold text-navy-900">{'\u20A6'}{formatPrice(connectionFee)}</span>
                 </div>
               </div>
               <button onClick={() => setShowPayment(true)} className="w-full bg-primary-400 hover:bg-primary-500 text-white py-3.5 rounded-xl font-semibold transition-all border-0 cursor-pointer text-sm">
-                Contact Landlord
+                Get Digital Key
               </button>
               <p className="text-xs text-gray-400 text-center mt-3">Secure payment. Instant access to landlord details.</p>
             </div>

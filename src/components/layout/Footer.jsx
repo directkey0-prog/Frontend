@@ -1,15 +1,17 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FiMail, FiPhone, FiMapPin } from 'react-icons/fi';
-import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn, FaTiktok } from 'react-icons/fa';
+import { FaFacebookF, FaInstagram, FaLinkedinIn, FaTiktok, FaWhatsapp } from 'react-icons/fa';
+import { FaXTwitter } from 'react-icons/fa6';
 import toast from 'react-hot-toast';
 
 const socialLinks = [
   { Icon: FaFacebookF, url: 'https://facebook.com/directkey' },
-  { Icon: FaTwitter, url: 'https://twitter.com/directkey' },
+  { Icon: FaXTwitter, url: 'https://x.com/directkey' },
   { Icon: FaInstagram, url: 'https://instagram.com/directkey' },
   { Icon: FaLinkedinIn, url: 'https://linkedin.com/company/directkey' },
   { Icon: FaTiktok, url: 'https://tiktok.com/@directkey' },
+  { Icon: FaWhatsapp, url: 'https://wa.me/2348012345678' },
 ];
 
 const Footer = () => {

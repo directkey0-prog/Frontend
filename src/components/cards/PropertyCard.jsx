@@ -1,8 +1,7 @@
-import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { IoBedOutline, IoWaterOutline } from 'react-icons/io5';
-import { FiMapPin, FiEye, FiHeart, FiUsers } from 'react-icons/fi';
+import { FiMapPin, FiEye, FiUsers } from 'react-icons/fi';
 import { HiOutlinePhotograph } from 'react-icons/hi';
 import { TbRulerMeasure } from 'react-icons/tb';
 import { getTypeDisplay } from '../../utils/propertyTypes';
@@ -23,23 +22,6 @@ const getPriceDisplay = (property) => {
 };
 
 const PropertyCard = ({ property, index = 0 }) => {
-  const [isFav, setIsFav] = useState(false);
-
-  useEffect(() => {
-    const favs = JSON.parse(localStorage.getItem('dk_favorites') || '[]');
-    setIsFav(favs.includes(String(property.id)));
-  }, [property.id]);
-
-  const toggleFavorite = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    const favs = JSON.parse(localStorage.getItem('dk_favorites') || '[]');
-    const pid = String(property.id);
-    const updated = favs.includes(pid) ? favs.filter(f => f !== pid) : [...favs, pid];
-    localStorage.setItem('dk_favorites', JSON.stringify(updated));
-    setIsFav(!isFav);
-  };
-
   const images = property.property_images || [];
   const mainImage = images.length > 0
     ? images[0].image_url
@@ -89,14 +71,6 @@ const PropertyCard = ({ property, index = 0 }) => {
               </span>
             )}
           </div>
-
-          {/* Favorite button */}
-          <button
-            onClick={toggleFavorite}
-            className={`absolute top-3 right-3 w-8 h-8 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white transition-colors border-0 cursor-pointer ${isFav ? 'bg-red-50' : 'bg-white/90'}`}
-          >
-            <FiHeart className={`text-sm ${isFav ? 'text-red-500 fill-red-500' : 'text-gray-600'}`} />
-          </button>
 
           {/* Image count */}
           {images.length > 1 && (
