@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiSearch } from 'react-icons/fi';
 import { HiOutlineHome } from 'react-icons/hi';
+import { getStates } from '../../services/api';
 
 const propertyTypes = ['All Types', 'Apartment', 'Land', 'Shortlet', 'Event Hall', 'Office Space'];
 
@@ -13,7 +14,6 @@ const HERO_CATEGORY_MAP = {
   'Event Hall': 'event_hall',
   'Office Space': 'office_space',
 };
-const popularStates = ['Lagos', 'Abuja', 'Rivers', 'Oyo', 'Ogun', 'Kano', 'Enugu', 'Delta', 'Edo', 'Kaduna'];
 
 // Carousel slides: video first, then all images
 const slides = [
@@ -42,6 +42,13 @@ const Hero = () => {
   const [searchType, setSearchType] = useState('');
   const [priceRange, setPriceRange] = useState('');
   const [current, setCurrent] = useState(0);
+  const [allStates, setAllStates] = useState([]);
+
+  useEffect(() => {
+    getStates().then((states) => {
+      if (Array.isArray(states)) setAllStates(states);
+    });
+  }, []);
 
   const goNext = useCallback(() => {
     setCurrent((prev) => (prev + 1) % slides.length);
@@ -158,7 +165,7 @@ const Hero = () => {
                   className="w-full px-3 pb-2 text-sm text-gray-800 bg-transparent border-0 focus:outline-none cursor-pointer appearance-auto"
                 >
                   <option value="">All States</option>
-                  {popularStates.map(s => (
+                  {allStates.map(s => (
                     <option key={s} value={s}>{s}</option>
                   ))}
                 </select>

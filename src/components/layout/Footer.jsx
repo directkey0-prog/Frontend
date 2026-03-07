@@ -6,12 +6,12 @@ import { FaXTwitter } from 'react-icons/fa6';
 import toast from 'react-hot-toast';
 
 const socialLinks = [
-  { Icon: FaFacebookF, url: 'https://facebook.com/directkey' },
-  { Icon: FaXTwitter, url: 'https://x.com/directkey' },
-  { Icon: FaInstagram, url: 'https://instagram.com/directkey' },
-  { Icon: FaLinkedinIn, url: 'https://linkedin.com/company/directkey' },
-  { Icon: FaTiktok, url: 'https://tiktok.com/@directkey' },
-  { Icon: FaWhatsapp, url: 'https://wa.me/2348012345678' },
+  { Icon: FaXTwitter, url: 'https://x.com/Directkeyng', label: 'Twitter/X' },
+  { Icon: FaInstagram, url: 'https://www.instagram.com/directkeyng', label: 'Instagram' },
+  { Icon: FaTiktok, url: 'https://www.tiktok.com/@directkeyng', label: 'TikTok' },
+  { Icon: FaWhatsapp, url: 'https://wa.me/2348012345678', label: 'WhatsApp' },
+  { Icon: FaFacebookF, url: 'https://facebook.com/directkeyng', label: 'Facebook' },
+  { Icon: FaLinkedinIn, url: 'https://linkedin.com/company/directkey', label: 'LinkedIn' },
 ];
 
 const Footer = () => {
@@ -69,12 +69,13 @@ const Footer = () => {
               landlords and tenants with verified listings and secure connections.
             </p>
             <div className="flex gap-3">
-              {socialLinks.map(({ Icon, url }, i) => (
+              {socialLinks.map(({ Icon, url, label }, i) => (
                 <a
                   key={i}
                   href={url}
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label={label}
                   className="w-9 h-9 rounded-full bg-navy-800 hover:bg-primary-400 flex items-center justify-center transition-colors no-underline"
                 >
                   <Icon className="text-sm text-white" />
