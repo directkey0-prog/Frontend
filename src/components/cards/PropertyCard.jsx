@@ -1,10 +1,11 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { IoBedOutline, IoWaterOutline } from 'react-icons/io5';
-import { FiMapPin, FiEye, FiUsers } from 'react-icons/fi';
-import { HiOutlinePhotograph } from 'react-icons/hi';
+import { FiMapPin, FiEye, FiUsers, FiHeart } from 'react-icons/fi';
+import { HiOutlinePhotograph, HiHeart } from 'react-icons/hi';
 import { TbRulerMeasure } from 'react-icons/tb';
 import { getTypeDisplay } from '../../utils/propertyTypes';
+import { useLikedProperties } from '../../hooks/useLikedProperties';
 
 const formatPrice = (amount) => {
   if (!amount) return '0';
@@ -22,6 +23,9 @@ const getPriceDisplay = (property) => {
 };
 
 const PropertyCard = ({ property, index = 0 }) => {
+  const { isLiked, toggleLike } = useLikedProperties();
+  const liked = isLiked(property.id);
+
   const images = property.property_images || [];
   const mainImage = images.length > 0
     ? images[0].image_url
@@ -42,6 +46,7 @@ const PropertyCard = ({ property, index = 0 }) => {
       whileInView={{ opacity: 1, x: 0, y: 0 }}
       viewport={{ once: true, margin: '-50px' }}
       transition={{ duration: 0.6, delay: (index % 6) * 0.1, ease: 'easeOut' }}
+      className="relative"
     >
       <Link
         to={`/property/${property.id}`}
@@ -148,6 +153,18 @@ const PropertyCard = ({ property, index = 0 }) => {
           </div>
         </div>
       </Link>
+
+      {/* Heart button — outside <Link> so it doesn't navigate */}
+      <button
+        onClick={() => toggleLike(property.id)}
+        aria-label={liked ? 'Remove from liked' : 'Save property'}
+        className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-md border-0 cursor-pointer transition-transform hover:scale-110 z-10"
+      >
+        {liked
+          ? <HiHeart className="text-lg text-primary-400" />
+          : <FiHeart className="text-lg text-gray-500" />
+        }
+      </button>
     </motion.div>
   );
 };

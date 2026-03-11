@@ -12,6 +12,7 @@ import About from './pages/public/About';
 import Contact from './pages/public/Contact';
 import Terms from './pages/public/Terms';
 import Privacy from './pages/public/Privacy';
+import LikedProperties from './pages/public/LikedProperties';
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
             <Route path="/contact" element={<Contact />} />
             <Route path="/terms" element={<Terms />} />
             <Route path="/privacy" element={<Privacy />} />
+            <Route path="/saved" element={<LikedProperties />} />
           </Routes>
         </main>
         <Footer />

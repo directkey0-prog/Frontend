@@ -11,6 +11,7 @@ import { APARTMENT_SUB_TYPES } from '../../utils/propertyTypes';
 const PROPERTY_CATEGORIES = [
   { value: 'apartment_type', label: 'Apartments' },
   { value: 'land', label: 'Land' },
+  { value: 'shop', label: 'Shop' },
   { value: 'shortlet', label: 'Shortlet' },
   { value: 'event_hall', label: 'Event Hall' },
   { value: 'office_space', label: 'Office Space' },

@@ -12,6 +12,8 @@ import {
   FiZap,
   FiLock,
   FiArrowRight,
+  FiPercent,
+  FiVideo,
 } from 'react-icons/fi';
 import { HiOutlineOfficeBuilding } from 'react-icons/hi';
 
@@ -21,60 +23,60 @@ const howItWorks = [
     Icon: FiSearch,
     title: 'Browse Properties',
     description:
-      'Search through hundreds of verified property listings across all 36 states and FCT in Nigeria. Filter by location, price, property type, and amenities to find exactly what you need.',
+      'Search through verified property listings across all 36 states and FCT. Filter by location, price, property type, and amenities to find exactly what you need.',
   },
   {
     step: 2,
     Icon: FiKey,
     title: 'Get Your Digital Key',
     description:
-      'Found your perfect property? Pay a one-time Digital Key fee of \u20A615,000 to unlock the landlord\u2019s contact information. Secure payment powered by Paystack ensures your transaction is protected.',
+      'Pay a one-time Digital Key fee of \u20A615,000 to unlock the landlord\u2019s contact information. Secure payment powered by Paystack \u2014 instant and protected.',
   },
   {
     step: 3,
     Icon: FiPhone,
     title: 'Connect Directly',
     description:
-      'Get instant access to the landlord\u2019s phone number, email, and WhatsApp. Contact them directly to schedule viewings, negotiate terms, and finalise your rental agreement.',
+      'Get instant access to the landlord\u2019s phone number, email, and WhatsApp. Speak directly, schedule viewings, and finalise your agreement \u2014 zero agent involvement.',
   },
 ];
 
-const benefits = [
+const whyChoose = [
+  {
+    Icon: FiPercent,
+    title: '0% Agent Commission',
+    description:
+      'We do not allow agents. You deal directly with property owners, cutting out the \u201CAgent and Agreement\u201D tax that tenants have been forced to pay for years.',
+  },
+  {
+    Icon: FiVideo,
+    title: 'Cinematic Accuracy',
+    description:
+      'Our 4K cinematic tours ensure that what you see is exactly what you get. No misleading photos, no surprise visits. High-definition visual storytelling on every listing.',
+  },
   {
     Icon: FiShield,
     title: 'Verified Listings',
     description:
-      'Every property is carefully reviewed and approved by our admin team before going live. No fake listings, no scams.',
+      'Every property on our platform is vetted for authenticity and CAC compliance by our admin team before going live. No fake listings, no scams.',
   },
   {
     Icon: FiLock,
-    title: 'Transparent Pricing',
+    title: 'Secure Payments',
     description:
-      'No hidden fees. One simple Digital Key payment of \u20A615,000 gives you direct access to landlord contacts.',
+      'All transactions are processed through Paystack, Nigeria\u2019s leading payment gateway. Your money and data are safe at every step.',
   },
   {
     Icon: FiZap,
     title: 'Instant Access',
     description:
-      'Get landlord contact details immediately after payment. No waiting, no delays. Start your conversation right away.',
-  },
-  {
-    Icon: FiCheckCircle,
-    title: 'Secure Payments',
-    description:
-      'All transactions are powered by Paystack, Nigeria\u2019s leading payment gateway. Your money is safe and secure.',
+      'Pay the Digital Key and get landlord contact details immediately \u2014 no waiting, no back-and-forth. Start your conversation right away.',
   },
   {
     Icon: FiMapPin,
     title: 'Nationwide Coverage',
     description:
-      'Properties available across all 36 states and FCT. Find your home anywhere in Nigeria.',
-  },
-  {
-    Icon: FiUsers,
-    title: 'Direct Connection',
-    description:
-      'No middlemen, no agents. Connect directly with property owners for faster decisions and better deals.',
+      'Properties available across all 36 states and FCT. Whether you are in Lagos, Abuja, Kano, or Enugu \u2014 we have you covered.',
   },
 ];
 
@@ -96,23 +98,24 @@ const About = () => {
             animate={{ opacity: 1, y: 0 }}
             className="text-4xl sm:text-5xl font-bold text-white mb-4"
           >
-            About DirectKey
+            No More Agents Wahala.
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-lg text-gray-300 max-w-2xl mx-auto"
+            className="text-lg text-gray-300 max-w-3xl mx-auto"
           >
-            Revolutionising property rental in Nigeria — transparent, secure, and hassle-free.
+            At DirectKey, we believe that finding a home in Nigeria should not be a financial
+            burden or a stressful gamble.
           </motion.p>
         </div>
       </div>
 
-      {/* Mission & Vision */}
+      {/* Our Story */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -121,17 +124,22 @@ const About = () => {
               <div className="w-12 h-12 bg-primary-50 rounded-xl flex items-center justify-center mb-5">
                 <FiHome className="text-xl text-primary-500" />
               </div>
-              <h2 className="text-3xl font-bold text-navy-900 mb-4">Our Mission</h2>
+              <h2 className="text-3xl font-bold text-navy-900 mb-5">Who We Are</h2>
               <p className="text-gray-600 leading-relaxed mb-4">
-                To revolutionise the property rental market in Nigeria by providing a transparent,
-                secure, and efficient platform that connects tenants directly with landlords. We
-                eliminate the stress and uncertainty of finding your dream home through verified
-                listings and instant landlord access.
+                For too long, tenants have been forced to pay exorbitant &ldquo;Agent and Agreement&rdquo;
+                fees for houses they found themselves, while landlords have struggled with
+                unverified leads and poor property representation.
+              </p>
+              <p className="text-gray-600 leading-relaxed mb-4">
+                DirectKey is a cinematography-led PropTech platform that bridges the gap. By
+                combining 4K Cinematic Tours with a Direct-to-Landlord model, we provide a
+                transparent, high-definition marketplace that puts both landlords and tenants
+                first.
               </p>
               <p className="text-gray-600 leading-relaxed">
-                By requiring a small Digital Key fee, we ensure that only genuinely interested
-                parties contact property owners — saving everyone time and creating meaningful,
-                direct connections.
+                We are not just a listing site. We are a movement to eliminate the
+                &ldquo;Agent Tax&rdquo; in Nigeria and restore trust in the rental market through
+                technology and transparency.
               </p>
             </motion.div>
 
@@ -140,19 +148,29 @@ const About = () => {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
             >
-              <div className="w-12 h-12 bg-navy-50 rounded-xl flex items-center justify-center mb-5">
-                <HiOutlineOfficeBuilding className="text-xl text-navy-700" />
+              <div className="bg-navy-900 rounded-2xl p-8 text-white">
+                <div className="w-12 h-12 bg-primary-400/20 rounded-xl flex items-center justify-center mb-5">
+                  <HiOutlineOfficeBuilding className="text-xl text-primary-400" />
+                </div>
+                <h3 className="text-2xl font-bold mb-4">Our Mission</h3>
+                <p className="text-gray-300 leading-relaxed text-lg">
+                  To eliminate the &ldquo;Agent Tax&rdquo; in Nigeria and provide 100% transparency
+                  through high-end visual storytelling.
+                </p>
+                <div className="mt-8 pt-6 border-t border-white/10 space-y-3">
+                  {[
+                    '0% Agent Commission',
+                    'Direct-to-Landlord connections',
+                    'Verified listings only',
+                    '4K cinematic property tours',
+                  ].map((point) => (
+                    <div key={point} className="flex items-center gap-3">
+                      <FiCheckCircle className="text-primary-400 flex-shrink-0" />
+                      <span className="text-gray-200 text-sm">{point}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
-              <h2 className="text-3xl font-bold text-navy-900 mb-4">Our Vision</h2>
-              <p className="text-gray-600 leading-relaxed mb-4">
-                To become Nigeria's leading property rental platform, making home finding
-                stress-free for every Nigerian. We envision a future where finding your perfect home
-                is as simple as a few clicks — with complete transparency and direct landlord
-                connections.
-              </p>
-              <p className="text-gray-600 leading-relaxed">
-                We are building trust in Nigeria's rental ecosystem, one verified listing at a time.
-              </p>
             </motion.div>
           </div>
         </div>
@@ -164,7 +182,7 @@ const About = () => {
           <div className="text-center mb-14">
             <h2 className="text-3xl font-bold text-navy-900 mb-4">How DirectKey Works</h2>
             <p className="text-gray-500 max-w-xl mx-auto">
-              Find your dream home in 3 simple steps
+              Find your next home in 3 simple steps — no agent required
             </p>
           </div>
 
@@ -176,7 +194,7 @@ const About = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="bg-white rounded-2xl p-8 shadow-sm text-center relative"
+                className="bg-white rounded-2xl p-8 shadow-sm text-center"
               >
                 <div className="w-10 h-10 bg-primary-400 text-white rounded-full flex items-center justify-center font-bold text-sm mx-auto mb-5">
                   {item.step}
@@ -192,18 +210,17 @@ const About = () => {
         </div>
       </section>
 
-      {/* Why Choose DirectKey */}
+      {/* Why Choose */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-14">
-            <h2 className="text-3xl font-bold text-navy-900 mb-4">Why Choose DirectKey?</h2>
+            <h2 className="text-3xl font-bold text-navy-900 mb-4">Why DirectKey?</h2>
             <p className="text-gray-500 max-w-xl mx-auto">
-              We are committed to providing the best property rental experience in Nigeria
+              The smarter, fairer way to rent property in Nigeria
             </p>
           </div>
-
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {benefits.map((item, index) => (
+            {whyChoose.map((item, index) => (
               <motion.div
                 key={item.title}
                 initial={{ opacity: 0, y: 20 }}
@@ -251,15 +268,15 @@ const About = () => {
             </div>
             <h2 className="text-3xl font-bold text-navy-900 mb-4">Registered &amp; Verified</h2>
             <p className="text-gray-500 mb-10">
-              DirectKey is a legally registered Nigerian company committed to transparency and trust.
+              DirectKey is a legally registered Nigerian company committed to transparency and trust in the rental market.
             </p>
-            <div className="bg-white rounded-2xl shadow-sm p-8 text-left space-y-4">
+            <div className="bg-white rounded-2xl shadow-sm p-8 text-left space-y-0">
               {[
                 { label: 'Company Name', value: 'DirectKey Nigeria Limited' },
                 { label: 'RC Number', value: 'RC: 0000000' },
                 { label: 'Registered Address', value: 'Lagos, Nigeria' },
               ].map(({ label, value }) => (
-                <div key={label} className="flex justify-between items-center py-3 border-b border-gray-100 last:border-0">
+                <div key={label} className="flex justify-between items-center py-4 border-b border-gray-100 last:border-0">
                   <span className="text-sm font-medium text-gray-500">{label}</span>
                   <span className="text-sm font-semibold text-navy-900">{value}</span>
                 </div>
@@ -274,7 +291,7 @@ const About = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-bold text-white mb-4">Ready to Find Your Home?</h2>
           <p className="text-gray-300 mb-10 max-w-xl mx-auto">
-            Browse hundreds of verified properties across Nigeria and connect directly with landlords.
+            Browse verified properties across Nigeria and connect directly with landlords. No agents, no surprises.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link

@@ -2,13 +2,15 @@ import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { IoBedOutline, IoWaterOutline } from 'react-icons/io5';
-import { FiMapPin, FiPhone, FiChevronLeft, FiChevronRight, FiShare2, FiCheck, FiUsers } from 'react-icons/fi';
+import { FiMapPin, FiPhone, FiChevronLeft, FiChevronRight, FiShare2, FiCheck, FiUsers, FiHeart } from 'react-icons/fi';
+import { HiHeart } from 'react-icons/hi';
 import { MdOutlineApartment } from 'react-icons/md';
 import { TbRulerMeasure } from 'react-icons/tb';
 import { getTypeDisplay } from '../../utils/propertyTypes';
 import { getPropertyById, getConnectionFee } from '../../services/api';
 import { SkeletonPropertyDetail } from '../../components/ui/Skeleton';
 import PaymentModal from '../../components/payments/PaymentModal';
+import { useLikedProperties } from '../../hooks/useLikedProperties';
 
 const formatPrice = (amount) => {
   if (!amount) return '0';
@@ -22,6 +24,7 @@ const PropertyDetails = () => {
   const [loading, setLoading] = useState(true);
   const [activeImage, setActiveImage] = useState(0);
   const [showPayment, setShowPayment] = useState(false);
+  const { isLiked, toggleLike } = useLikedProperties();
 
   const handleShare = async () => {
     const url = window.location.href;
@@ -134,6 +137,16 @@ const PropertyDetails = () => {
           )}
 
           <div className="absolute top-4 right-4 flex gap-2">
+            <button
+              onClick={() => toggleLike(property.id)}
+              aria-label={isLiked(property.id) ? 'Remove from saved' : 'Save property'}
+              className="w-10 h-10 bg-white/90 rounded-full flex items-center justify-center hover:bg-white transition border-0 cursor-pointer shadow-lg"
+            >
+              {isLiked(property.id)
+                ? <HiHeart className="text-lg text-primary-400" />
+                : <FiHeart className="text-lg text-gray-700" />
+              }
+            </button>
             <button onClick={handleShare} className="w-10 h-10 bg-white/90 rounded-full flex items-center justify-center hover:bg-white transition border-0 cursor-pointer shadow-lg"><FiShare2 className="text-gray-700" /></button>
           </div>
         </div>

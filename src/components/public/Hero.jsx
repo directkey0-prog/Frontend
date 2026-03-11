@@ -5,11 +5,12 @@ import { FiSearch } from 'react-icons/fi';
 import { HiOutlineHome } from 'react-icons/hi';
 import { getStates } from '../../services/api';
 
-const propertyTypes = ['All Types', 'Apartment', 'Land', 'Shortlet', 'Event Hall', 'Office Space'];
+const propertyTypes = ['All Types', 'Apartment', 'Land', 'Shop', 'Shortlet', 'Event Hall', 'Office Space'];
 
 const HERO_CATEGORY_MAP = {
   'Apartment': 'apartment_type',
   'Land': 'land',
+  'Shop': 'shop',
   'Shortlet': 'shortlet',
   'Event Hall': 'event_hall',
   'Office Space': 'office_space',

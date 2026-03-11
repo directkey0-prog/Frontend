@@ -1,10 +1,13 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { HiMenu, HiX } from 'react-icons/hi';
+import { FiHeart } from 'react-icons/fi';
+import { useLikedProperties } from '../../hooks/useLikedProperties';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const { likedIds } = useLikedProperties();
 
   const navLinks = [
     { name: 'Home', path: '/' },
@@ -45,6 +48,18 @@ const Navbar = () => {
                 {link.name}
               </Link>
             ))}
+            <Link
+              to="/saved"
+              aria-label="Saved properties"
+              className="relative flex items-center justify-center w-9 h-9 rounded-full hover:bg-gray-100 transition-colors no-underline"
+            >
+              <FiHeart className={`text-lg ${isActive('/saved') ? 'text-primary-500' : 'text-gray-600'}`} />
+              {likedIds.length > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-primary-400 text-white text-xs font-bold rounded-full flex items-center justify-center leading-none">
+                  {likedIds.length > 9 ? '9+' : likedIds.length}
+                </span>
+              )}
+            </Link>
             <a
               href="http://localhost:5174"
               target="_blank"
@@ -89,6 +104,19 @@ const Navbar = () => {
                 {link.name}
               </Link>
             ))}
+            <Link
+              to="/saved"
+              onClick={() => setIsOpen(false)}
+              className={`flex items-center gap-2 py-2 px-3 rounded-lg text-sm font-medium transition-colors no-underline ${isActive('/saved') ? 'bg-primary-50 text-primary-500' : 'text-gray-600 hover:bg-gray-50'}`}
+            >
+              <FiHeart className="text-base" />
+              Saved Properties
+              {likedIds.length > 0 && (
+                <span className="ml-auto bg-primary-400 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">
+                  {likedIds.length}
+                </span>
+              )}
+            </Link>
             <hr className="border-gray-100" />
             <a
               href="http://localhost:5174"

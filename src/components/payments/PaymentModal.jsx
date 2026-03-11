@@ -7,7 +7,7 @@ import toast from 'react-hot-toast';
 
 const formatPrice = (amount) => new Intl.NumberFormat('en-NG').format(amount);
 
-const API_BASE = 'http://localhost:5000/api';
+const API_BASE = `${import.meta.env.VITE_BACKEND_URL}/api`;
 
 // Public key from .env — enables real Paystack when set
 const PAYSTACK_KEY = import.meta.env.VITE_PAYSTACK_PUBLIC_KEY || '';
