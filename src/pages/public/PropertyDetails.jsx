@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { IoBedOutline, IoWaterOutline } from 'react-icons/io5';
-import { FiMapPin, FiPhone, FiChevronLeft, FiChevronRight, FiShare2, FiCheck, FiUsers, FiHeart } from 'react-icons/fi';
+import { FiMapPin, FiPhone, FiChevronLeft, FiChevronRight, FiCheck, FiUsers, FiHeart } from 'react-icons/fi';
 import { HiHeart } from 'react-icons/hi';
 import { MdOutlineApartment } from 'react-icons/md';
 import { TbRulerMeasure } from 'react-icons/tb';
@@ -25,17 +25,6 @@ const PropertyDetails = () => {
   const [activeImage, setActiveImage] = useState(0);
   const [showPayment, setShowPayment] = useState(false);
   const { isLiked, toggleLike } = useLikedProperties();
-
-  const handleShare = async () => {
-    const url = window.location.href;
-    const text = `Check out this property on DirectKey: ${property?.property_name}`;
-    if (navigator.share) {
-      try { await navigator.share({ title: property?.property_name, text, url }); } catch {}
-    } else {
-      await navigator.clipboard.writeText(url);
-      alert('Link copied to clipboard!');
-    }
-  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -147,7 +136,6 @@ const PropertyDetails = () => {
                 : <FiHeart className="text-lg text-gray-700" />
               }
             </button>
-            <button onClick={handleShare} className="w-10 h-10 bg-white/90 rounded-full flex items-center justify-center hover:bg-white transition border-0 cursor-pointer shadow-lg"><FiShare2 className="text-gray-700" /></button>
           </div>
         </div>
 
