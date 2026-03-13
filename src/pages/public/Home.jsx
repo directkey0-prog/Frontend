@@ -9,7 +9,7 @@ import PropertyCard from '../../components/cards/PropertyCard';
 import { SkeletonCard } from '../../components/ui/Skeleton';
 import { getProperties, getConnectionFee } from '../../services/api';
 
-const propertyTypeTabs = ['All', 'Apartments', 'Land', 'Shortlet', 'Event Hall', 'Office Space'];
+const propertyTypeTabs = ['All', 'Apartments', 'Land', 'Shortlet', 'Event Hall', 'Office Space', 'Shop'];
 
 const CATEGORY_MAP = {
   'Apartments': 'apartment_type',
@@ -17,6 +17,7 @@ const CATEGORY_MAP = {
   'Shortlet': 'shortlet',
   'Event Hall': 'event_hall',
   'Office Space': 'office_space',
+  'Shop': 'shop',
 };
 
 const formatPrice = (amount) => new Intl.NumberFormat('en-NG').format(amount);
@@ -88,13 +89,13 @@ const Home = () => {
 
           {/* Property Grid */}
           {loading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
               {[...Array(6)].map((_, i) => (
                 <SkeletonCard key={i} />
               ))}
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
               {displayProperties.map((property, index) => (
                 <PropertyCard key={property.id} property={property} index={index} />
               ))}

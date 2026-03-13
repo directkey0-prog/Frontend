@@ -13,12 +13,12 @@ const API_BASE = `${import.meta.env.VITE_BACKEND_URL}/api`;
 const PAYSTACK_KEY = import.meta.env.VITE_PAYSTACK_PUBLIC_KEY || '';
 const USE_REAL_PAYSTACK = PAYSTACK_KEY.startsWith('pk_');
 
-// Fallback landlord shown if Supabase isn't connected yet
+// Fallback contact shown if landlord info is unavailable — DirectKey support
 const FALLBACK_LANDLORD = {
-  name: 'Chidi Okonkwo',
-  phone: '+234 805 123 4567',
-  email: 'chidi.okonkwo@directkey.ng',
-  whatsapp: '+2348051234567',
+  name: 'DirectKey Support',
+  phone: '+234 901 234 5678',
+  email: 'support@directkey.ng',
+  whatsapp: '+2349012345678',
 };
 
 const PaymentModal = ({ isOpen, onClose, property, connectionFee = 15000 }) => {

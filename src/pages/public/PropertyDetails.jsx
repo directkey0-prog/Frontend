@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { IoBedOutline, IoWaterOutline } from 'react-icons/io5';
-import { FiMapPin, FiPhone, FiChevronLeft, FiChevronRight, FiCheck, FiUsers, FiHeart } from 'react-icons/fi';
+import { FiMapPin, FiPhone, FiChevronLeft, FiChevronRight, FiCheck, FiUsers, FiHeart, FiShare2 } from 'react-icons/fi';
 import { HiHeart } from 'react-icons/hi';
 import { MdOutlineApartment } from 'react-icons/md';
 import { TbRulerMeasure } from 'react-icons/tb';
@@ -11,6 +11,7 @@ import { getPropertyById, getConnectionFee } from '../../services/api';
 import { SkeletonPropertyDetail } from '../../components/ui/Skeleton';
 import PaymentModal from '../../components/payments/PaymentModal';
 import { useLikedProperties } from '../../hooks/useLikedProperties';
+import toast from 'react-hot-toast';
 
 const formatPrice = (amount) => {
   if (!amount) return '0';
@@ -71,7 +72,21 @@ const PropertyDetails = () => {
   const isShortlet = property.property_category === 'shortlet';
   const isEventHall = property.property_category === 'event_hall';
   const isOfficeSpace = property.property_category === 'office_space';
+  const isShop = property.property_category === 'shop';
   const typeDisplay = getTypeDisplay(property);
+
+  const handleShare = async () => {
+    const url = window.location.href;
+    const text = `Check out this property: ${property.property_name} in ${property.area}, ${property.state} — ${url}`;
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: property.property_name, text, url });
+      } catch { /* user cancelled */ }
+    } else {
+      await navigator.clipboard.writeText(url);
+      toast.success('Link copied to clipboard!');
+    }
+  };
   const nextImage = () => setActiveImage((prev) => (prev + 1) % Math.max(images.length, 1));
   const prevImage = () => setActiveImage((prev) => (prev - 1 + Math.max(images.length, 1)) % Math.max(images.length, 1));
 
@@ -126,6 +141,13 @@ const PropertyDetails = () => {
           )}
 
           <div className="absolute top-4 right-4 flex gap-2">
+            <button
+              onClick={handleShare}
+              aria-label="Share property"
+              className="w-10 h-10 bg-white/90 rounded-full flex items-center justify-center hover:bg-white transition border-0 cursor-pointer shadow-lg"
+            >
+              <FiShare2 className="text-lg text-gray-700" />
+            </button>
             <button
               onClick={() => toggleLike(property.id)}
               aria-label={isLiked(property.id) ? 'Remove from saved' : 'Save property'}
@@ -189,6 +211,10 @@ const PropertyDetails = () => {
                 { icon: IoBedOutline, value: property.bedrooms, label: 'Rooms' },
                 { icon: IoWaterOutline, value: property.bathrooms, label: 'Bathrooms' },
                 { icon: MdOutlineApartment, value: 'Office Space', label: 'Type' },
+              ] : isShop ? [
+                { icon: IoBedOutline, value: property.bedrooms, label: 'Units' },
+                { icon: IoWaterOutline, value: property.bathrooms, label: 'Bathrooms' },
+                { icon: MdOutlineApartment, value: 'Shop', label: 'Type' },
               ] : [
                 { icon: IoBedOutline, value: property.bedrooms, label: 'Bedrooms' },
                 { icon: IoWaterOutline, value: property.bathrooms, label: 'Bathrooms' },
