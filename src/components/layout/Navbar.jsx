@@ -61,7 +61,7 @@ const Navbar = () => {
               )}
             </Link>
             <a
-              href="http://localhost:5174"
+              href="https://landlord.directkey.ng"
               target="_blank"
               rel="noopener noreferrer"
               className="text-sm font-medium text-navy-800 hover:text-primary-500 transition-colors no-underline"
@@ -119,7 +119,7 @@ const Navbar = () => {
             </Link>
             <hr className="border-gray-100" />
             <a
-              href="http://localhost:5174"
+              href="https://landlord.directkey.ng"
               target="_blank"
               rel="noopener noreferrer"
               className="block py-2 px-3 text-sm font-medium text-navy-800 no-underline"
