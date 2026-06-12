@@ -53,7 +53,7 @@ const PropertyCard = ({ property, index = 0 }) => {
         className="group block bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 no-underline"
       >
         {/* Image Container */}
-        <div className="relative aspect-[4/3] overflow-hidden">
+        <div className="relative aspect-[3/4] overflow-hidden">
           <img
             src={mainImage}
             alt={property.property_name}

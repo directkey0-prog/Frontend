@@ -193,7 +193,7 @@ const Home = () => {
       <Testimonials />
 
       {/* FAQ */}
-      <FAQ />
+      <div id="faq"><FAQ /></div>
 
       {/* CTA */}
       <section className="py-20 bg-gradient-to-br from-navy-800 to-navy-950">
@@ -217,7 +217,9 @@ const Home = () => {
                 Browse Properties
               </Link>
               <a
-                href="http://localhost:5174"
+                href="https://landlord.directkey.ng"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="bg-white/10 hover:bg-white/20 text-white border border-white/20 px-8 py-3.5 rounded-xl font-semibold transition-all no-underline"
               >
                 List Your Property

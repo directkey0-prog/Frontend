@@ -112,10 +112,10 @@ const Footer = () => {
             <h3 className="text-white font-semibold mb-4">For Landlords</h3>
             <ul className="space-y-3">
               {[
-                { name: 'List Your Property', url: 'http://localhost:5174' },
-                { name: 'Landlord Dashboard', url: 'http://localhost:5174' },
+                { name: 'List Your Property', url: 'https://landlord.directkey.ng' },
+                { name: 'Landlord Dashboard', url: 'https://landlord.directkey.ng' },
                 { name: 'Pricing', url: '#' },
-                { name: 'FAQs', url: '#' },
+                { name: 'FAQs', url: '/#faq' },
               ].map((link) => (
                 <li key={link.name}>
                   <a
@@ -160,7 +160,7 @@ const Footer = () => {
           <p className="text-sm text-gray-500">
             {new Date().getFullYear()} DirectKey. All rights reserved.
           </p>
-          <p className="text-xs text-gray-600">RC: 0000000</p>
+          <p className="text-xs text-gray-600">RC: 9238738</p>
           <div className="flex gap-6">
             <Link to="/privacy" className="text-sm text-gray-500 hover:text-gray-300 transition-colors no-underline">
               Privacy Policy
