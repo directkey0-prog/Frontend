@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { FiSearch, FiDollarSign, FiPhoneCall, FiArrowRight } from 'react-icons/fi';
+import { FiSearch, FiPhoneCall, FiArrowRight } from 'react-icons/fi';
+import { TbCurrencyNaira } from 'react-icons/tb';
 import Hero from '../../components/public/Hero';
 import Testimonials from '../../components/public/Testimonials';
 import FAQ from '../../components/public/FAQ';
@@ -153,7 +154,7 @@ const Home = () => {
                 step: '01',
               },
               {
-                icon: FiDollarSign,
+                icon: TbCurrencyNaira,
                 title: 'Get Digital Key',
                 description: `Pay a one-time digital key fee of \u20A6${formatPrice(digitalKeyFee)} to unlock direct access to the landlord's contact.`,
                 color: 'bg-primary-50',

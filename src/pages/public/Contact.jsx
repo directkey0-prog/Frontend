@@ -3,10 +3,7 @@ import { motion } from 'framer-motion';
 import { FiMail, FiPhone, FiMapPin, FiSend } from 'react-icons/fi';
 import toast, { Toaster } from 'react-hot-toast';
 
-// Set VITE_GOOGLE_SCRIPT_URL in .env to enable Google Sheets submission
-const GOOGLE_SCRIPT_URL = import.meta.env.VITE_GOOGLE_SCRIPT_URL || '';
-const API_BASE = 'http://localhost:5000/api';
-const USE_DUMMY_DATA = true;
+const API_BASE = `${import.meta.env.VITE_BACKEND_URL}/api`;
 
 const Contact = () => {
   const [form, setForm] = useState({ name: '', email: '', phone: '', subject: '', message: '' });
@@ -20,25 +17,11 @@ const Contact = () => {
     }
     setSending(true);
     try {
-      if (USE_DUMMY_DATA) {
-        await new Promise(resolve => setTimeout(resolve, 1000));
-      } else {
-        // Google Sheets via Apps Script (fire and forget, no-cors)
-        if (GOOGLE_SCRIPT_URL) {
-          fetch(GOOGLE_SCRIPT_URL, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ ...form, timestamp: new Date().toISOString() }),
-          }).catch(() => {});
-        }
-        // Supabase backup via backend
-        await fetch(`${API_BASE}/messages`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(form),
-        });
-      }
+      await fetch(`${API_BASE}/messages`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
       toast.success('Message sent successfully! We will get back to you soon.');
       setForm({ name: '', email: '', phone: '', subject: '', message: '' });
     } catch (err) {

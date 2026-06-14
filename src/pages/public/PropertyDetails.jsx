@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { IoBedOutline, IoWaterOutline } from 'react-icons/io5';
-import { FiMapPin, FiPhone, FiChevronLeft, FiChevronRight, FiCheck, FiUsers, FiHeart, FiShare2 } from 'react-icons/fi';
+import { FiMapPin, FiPhone, FiChevronLeft, FiChevronRight, FiCheck, FiUsers, FiHeart, FiShare2, FiX, FiMaximize2 } from 'react-icons/fi';
 import { HiHeart } from 'react-icons/hi';
 import { MdOutlineApartment } from 'react-icons/md';
 import { TbRulerMeasure } from 'react-icons/tb';
@@ -25,6 +25,7 @@ const PropertyDetails = () => {
   const [loading, setLoading] = useState(true);
   const [activeImage, setActiveImage] = useState(0);
   const [showPayment, setShowPayment] = useState(false);
+  const [lightbox, setLightbox] = useState(false);
   const { isLiked, toggleLike } = useLikedProperties();
 
   useEffect(() => {
@@ -87,8 +88,8 @@ const PropertyDetails = () => {
       toast.success('Link copied to clipboard!');
     }
   };
-  const nextImage = () => setActiveImage((prev) => (prev + 1) % Math.max(images.length, 1));
-  const prevImage = () => setActiveImage((prev) => (prev - 1 + Math.max(images.length, 1)) % Math.max(images.length, 1));
+  const nextImage = useCallback(() => setActiveImage((prev) => (prev + 1) % Math.max(images.length, 1)), [images.length]);
+  const prevImage = useCallback(() => setActiveImage((prev) => (prev - 1 + Math.max(images.length, 1)) % Math.max(images.length, 1)), [images.length]);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -108,7 +109,7 @@ const PropertyDetails = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Image Gallery */}
         <div className="relative rounded-2xl overflow-hidden mb-8 bg-gray-900">
-          <div className="aspect-[16/9] sm:aspect-[2/1] lg:aspect-[5/2]">
+          <div className="aspect-[16/9] sm:aspect-[2/1] lg:aspect-[5/2] cursor-zoom-in" onClick={() => images.length > 0 && setLightbox(true)}>
             {images.length > 0 ? (
               <motion.img
                 key={activeImage}
@@ -124,17 +125,22 @@ const PropertyDetails = () => {
                 <span className="text-gray-400 text-lg">No images available</span>
               </div>
             )}
+            {images.length > 0 && (
+              <div className="absolute bottom-4 left-4 bg-black/50 text-white text-xs px-2.5 py-1.5 rounded-lg flex items-center gap-1.5 pointer-events-none">
+                <FiMaximize2 className="text-xs" /> Tap to expand
+              </div>
+            )}
           </div>
 
           {images.length > 1 && (
             <>
-              <button onClick={prevImage} className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 rounded-full flex items-center justify-center hover:bg-white transition border-0 cursor-pointer shadow-lg">
+              <button onClick={(e) => { e.stopPropagation(); prevImage(); }} className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 rounded-full flex items-center justify-center hover:bg-white transition border-0 cursor-pointer shadow-lg">
                 <FiChevronLeft className="text-gray-700" />
               </button>
-              <button onClick={nextImage} className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 rounded-full flex items-center justify-center hover:bg-white transition border-0 cursor-pointer shadow-lg">
+              <button onClick={(e) => { e.stopPropagation(); nextImage(); }} className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 rounded-full flex items-center justify-center hover:bg-white transition border-0 cursor-pointer shadow-lg">
                 <FiChevronRight className="text-gray-700" />
               </button>
-              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/60 backdrop-blur-sm text-white text-sm px-4 py-1.5 rounded-full">
+              <div className="absolute bottom-4 right-4 bg-black/60 backdrop-blur-sm text-white text-sm px-4 py-1.5 rounded-full">
                 {activeImage + 1} / {images.length}
               </div>
             </>
@@ -290,6 +296,66 @@ const PropertyDetails = () => {
       </div>
 
       <PaymentModal isOpen={showPayment} onClose={() => setShowPayment(false)} property={property} connectionFee={connectionFee} />
+
+      {/* Lightbox */}
+      <AnimatePresence>
+        {lightbox && images.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center"
+            onClick={() => setLightbox(false)}
+          >
+            <button
+              onClick={() => setLightbox(false)}
+              className="absolute top-4 right-4 w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center border-0 cursor-pointer text-white z-10"
+            >
+              <FiX className="text-xl" />
+            </button>
+
+            {images.length > 1 && (
+              <>
+                <button
+                  onClick={(e) => { e.stopPropagation(); prevImage(); }}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center border-0 cursor-pointer text-white z-10"
+                >
+                  <FiChevronLeft className="text-2xl" />
+                </button>
+                <button
+                  onClick={(e) => { e.stopPropagation(); nextImage(); }}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center border-0 cursor-pointer text-white z-10"
+                >
+                  <FiChevronRight className="text-2xl" />
+                </button>
+              </>
+            )}
+
+            <motion.img
+              key={activeImage}
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.2 }}
+              src={images[activeImage]?.image_url}
+              alt={`${property.property_name} - Image ${activeImage + 1}`}
+              className="max-w-[95vw] max-h-[90vh] object-contain rounded-lg"
+              onClick={(e) => e.stopPropagation()}
+            />
+
+            {images.length > 1 && (
+              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
+                {images.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={(e) => { e.stopPropagation(); setActiveImage(i); }}
+                    className={`w-2 h-2 rounded-full border-0 cursor-pointer transition-all ${i === activeImage ? 'bg-white scale-125' : 'bg-white/40'}`}
+                  />
+                ))}
+              </div>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

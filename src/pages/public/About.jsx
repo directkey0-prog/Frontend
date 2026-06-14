@@ -1,8 +1,8 @@
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import {
   FiShield,
-  FiUsers,
   FiHome,
   FiCheckCircle,
   FiSearch,
@@ -16,30 +16,7 @@ import {
   FiVideo,
 } from 'react-icons/fi';
 import { HiOutlineOfficeBuilding } from 'react-icons/hi';
-
-const howItWorks = [
-  {
-    step: 1,
-    Icon: FiSearch,
-    title: 'Browse Properties',
-    description:
-      'Search through verified property listings across all 36 states and FCT. Filter by location, price, property type, and amenities to find exactly what you need.',
-  },
-  {
-    step: 2,
-    Icon: FiKey,
-    title: 'Get Your Digital Key',
-    description:
-      'Pay a one-time Digital Key fee of \u20A615,000 to unlock the landlord\u2019s contact information. Secure payment powered by Paystack \u2014 instant and protected.',
-  },
-  {
-    step: 3,
-    Icon: FiPhone,
-    title: 'Connect Directly',
-    description:
-      'Get instant access to the landlord\u2019s phone number, email, and WhatsApp. Speak directly, schedule viewings, and finalise your agreement \u2014 zero agent involvement.',
-  },
-];
+import { getConnectionFee } from '../../services/api';
 
 const whyChoose = [
   {
@@ -87,7 +64,41 @@ const stats = [
   { value: '37', label: 'States Covered' },
 ];
 
+const formatPrice = (amount) => new Intl.NumberFormat('en-NG').format(amount);
+
 const About = () => {
+  const [digitalKeyFee, setDigitalKeyFee] = useState(15000);
+
+  useEffect(() => {
+    getConnectionFee().then(data => {
+      if (data?.connection_fee) setDigitalKeyFee(parseInt(data.connection_fee));
+    }).catch(() => {});
+  }, []);
+
+  const howItWorks = [
+    {
+      step: 1,
+      Icon: FiSearch,
+      title: 'Browse Properties',
+      description:
+        'Search through verified property listings across all 36 states and FCT. Filter by location, price, property type, and amenities to find exactly what you need.',
+    },
+    {
+      step: 2,
+      Icon: FiKey,
+      title: 'Get Your Digital Key',
+      description:
+        `Pay a one-time Digital Key fee of ₦${formatPrice(digitalKeyFee)} to unlock the landlord’s contact information. Secure payment powered by Paystack — instant and protected.`,
+    },
+    {
+      step: 3,
+      Icon: FiPhone,
+      title: 'Connect Directly',
+      description:
+        'Get instant access to the landlord’s phone number, email, and WhatsApp. Speak directly, schedule viewings, and finalise your agreement — zero agent involvement.',
+    },
+  ];
+
   return (
     <div className="min-h-screen">
       {/* Header */}
@@ -273,7 +284,7 @@ const About = () => {
             <div className="bg-white rounded-2xl shadow-sm p-8 text-left space-y-0">
               {[
                 { label: 'Company Name', value: 'DirectKey Nigeria Limited' },
-                { label: 'RC Number', value: 'RC: 0000000' },
+                { label: 'RC Number', value: 'RC: 9238738' },
                 { label: 'Registered Address', value: 'Lagos, Nigeria' },
               ].map(({ label, value }) => (
                 <div key={label} className="flex justify-between items-center py-4 border-b border-gray-100 last:border-0">
