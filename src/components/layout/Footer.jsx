@@ -14,14 +14,30 @@ const socialLinks = [
   { Icon: FaLinkedinIn, url: 'https://linkedin.com/company/directkey', label: 'LinkedIn' },
 ];
 
+const API_BASE = `${import.meta.env.VITE_BACKEND_URL}/api`;
+
 const Footer = () => {
   const [email, setEmail] = useState('');
+  const [subscribing, setSubscribing] = useState(false);
 
-  const handleSubscribe = (e) => {
+  const handleSubscribe = async (e) => {
     e.preventDefault();
-    if (email.trim()) {
+    if (!email.trim()) return;
+    setSubscribing(true);
+    try {
+      const res = await fetch(`${API_BASE}/newsletter/subscribe`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to subscribe');
       toast.success('Subscribed successfully!');
       setEmail('');
+    } catch {
+      toast.error('Could not subscribe. Please try again.');
+    } finally {
+      setSubscribing(false);
     }
   };
 
@@ -46,9 +62,10 @@ const Footer = () => {
               />
               <button
                 type="submit"
-                className="px-6 py-3 bg-primary-400 hover:bg-primary-500 text-white font-semibold rounded-lg text-sm transition-colors cursor-pointer"
+                disabled={subscribing}
+                className="px-6 py-3 bg-primary-400 hover:bg-primary-500 text-white font-semibold rounded-lg text-sm transition-colors cursor-pointer disabled:opacity-60"
               >
-                Subscribe
+                {subscribing ? 'Subscribing...' : 'Subscribe'}
               </button>
             </form>
           </div>

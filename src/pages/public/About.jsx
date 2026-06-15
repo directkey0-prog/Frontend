@@ -57,12 +57,6 @@ const whyChoose = [
   },
 ];
 
-const stats = [
-  { value: '250+', label: 'Happy Tenants' },
-  { value: '486+', label: 'Verified Landlords' },
-  { value: '852+', label: 'Listed Properties' },
-  { value: '37', label: 'States Covered' },
-];
 
 const formatPrice = (amount) => new Intl.NumberFormat('en-NG').format(amount);
 
@@ -251,24 +245,6 @@ const About = () => {
         </div>
       </section>
 
-      {/* Stats */}
-      <section className="py-16 bg-navy-900">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            {stats.map((stat) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-              >
-                <p className="text-3xl font-bold text-white mb-1">{stat.value}</p>
-                <p className="text-sm text-gray-400">{stat.label}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Company Info */}
       <section className="py-20 bg-gray-50">

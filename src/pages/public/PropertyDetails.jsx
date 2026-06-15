@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { IoBedOutline, IoWaterOutline } from 'react-icons/io5';
@@ -88,8 +88,8 @@ const PropertyDetails = () => {
       toast.success('Link copied to clipboard!');
     }
   };
-  const nextImage = useCallback(() => setActiveImage((prev) => (prev + 1) % Math.max(images.length, 1)), [images.length]);
-  const prevImage = useCallback(() => setActiveImage((prev) => (prev - 1 + Math.max(images.length, 1)) % Math.max(images.length, 1)), [images.length]);
+  const nextImage = () => setActiveImage((prev) => (prev + 1) % Math.max(images.length, 1));
+  const prevImage = () => setActiveImage((prev) => (prev - 1 + Math.max(images.length, 1)) % Math.max(images.length, 1));
 
   return (
     <div className="min-h-screen bg-gray-50">
