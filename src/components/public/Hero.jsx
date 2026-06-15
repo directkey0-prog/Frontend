@@ -212,24 +212,6 @@ const Hero = () => {
             </div>
           </motion.div>
 
-          {/* Stats */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-            className="flex gap-12 sm:gap-16 mt-14"
-          >
-            {[
-              { value: '852+', label: 'Properties' },
-              { value: '486+', label: 'Landlords' },
-              { value: '250+', label: 'Happy Tenants' },
-            ].map((stat) => (
-              <div key={stat.label} className="text-center">
-                <div className="text-2xl sm:text-3xl font-bold text-white">{stat.value}</div>
-                <div className="text-sm text-gray-400 mt-1">{stat.label}</div>
-              </div>
-            ))}
-          </motion.div>
         </div>
       </div>
     </section>
